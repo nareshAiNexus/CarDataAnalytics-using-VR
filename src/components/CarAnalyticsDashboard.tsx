@@ -390,52 +390,6 @@ const CarAnalyticsDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Overall Insights */}
-        {overallInsights.length > 0 && (
-          <div style={cardStyle}>
-            <h3 style={{ margin: '0 0 1.5rem', color: '#111827', fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              🤖 AI-Powered Overall Insights
-              <span style={{ 
-                fontSize: '0.75rem', 
-                backgroundColor: '#3b82f6', 
-                color: 'white', 
-                padding: '0.25rem 0.5rem', 
-                borderRadius: '0.25rem',
-                fontWeight: '600'
-              }}>LIVE</span>
-            </h3>
-            <div style={{ display: 'grid', gap: '1rem' }}>
-              {overallInsights.map((insight, index) => (
-                <div 
-                  key={index} 
-                  style={{
-                    padding: '1rem 1.25rem',
-                    background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
-                    borderRadius: '0.75rem',
-                    borderLeft: '4px solid #3b82f6',
-                    fontSize: '0.95rem',
-                    lineHeight: '1.6',
-                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
-                    transition: 'all 0.2s ease-in-out'
-                  }}
-                  onMouseOver={(e) => {
-                    const div = e.target as HTMLDivElement;
-                    div.style.boxShadow = '0 4px 8px rgba(59, 130, 246, 0.15)';
-                    div.style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseOut={(e) => {
-                    const div = e.target as HTMLDivElement;
-                    div.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.05)';
-                    div.style.transform = 'translateY(0)';
-                  }}
-                >
-                  {insight}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* User Data Table */}
         <div style={cardStyle}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
@@ -528,6 +482,51 @@ const CarAnalyticsDashboard: React.FC = () => {
           </div>
         </div>
 
+        {/* Overall Insights */}
+        {overallInsights.length > 0 && (
+          <div style={cardStyle}>
+            <h3 style={{ margin: '0 0 1.5rem', color: '#111827', fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              🤖 AI-Powered Overall Insights
+              <span style={{ 
+                fontSize: '0.75rem', 
+                backgroundColor: '#3b82f6', 
+                color: 'white', 
+                padding: '0.25rem 0.5rem', 
+                borderRadius: '0.25rem',
+                fontWeight: '600'
+              }}>LIVE</span>
+            </h3>
+            <div style={{ display: 'grid', gap: '1rem' }}>
+              {overallInsights.map((insight, index) => (
+                <div 
+                  key={index} 
+                  style={{
+                    padding: '1rem 1.25rem',
+                    background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+                    borderRadius: '0.75rem',
+                    borderLeft: '4px solid #3b82f6',
+                    fontSize: '0.95rem',
+                    lineHeight: '1.6',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+                    transition: 'all 0.2s ease-in-out'
+                  }}
+                  onMouseOver={(e) => {
+                    const div = e.target as HTMLDivElement;
+                    div.style.boxShadow = '0 4px 8px rgba(59, 130, 246, 0.15)';
+                    div.style.transform = 'translateY(-2px)';
+                  }}
+                  onMouseOut={(e) => {
+                    const div = e.target as HTMLDivElement;
+                    div.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.05)';
+                    div.style.transform = 'translateY(0)';
+                  }}
+                >
+                  {insight}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* User Analytics Modal */}
