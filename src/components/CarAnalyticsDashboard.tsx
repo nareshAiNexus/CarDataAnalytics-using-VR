@@ -329,52 +329,6 @@ const CarAnalyticsDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Overall Insights */}
-        {overallInsights.length > 0 && (
-          <div style={cardStyle}>
-            <h3 style={{ margin: '0 0 1.5rem', color: '#111827', fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              🤖 AI-Powered Overall Insights
-              <span style={{ 
-                fontSize: '0.75rem', 
-                backgroundColor: '#3b82f6', 
-                color: 'white', 
-                padding: '0.25rem 0.5rem', 
-                borderRadius: '0.25rem',
-                fontWeight: '600'
-              }}>LIVE</span>
-            </h3>
-            <div style={{ display: 'grid', gap: '1rem' }}>
-              {overallInsights.map((insight, index) => (
-                <div 
-                  key={index} 
-                  style={{
-                    padding: '1rem 1.25rem',
-                    background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
-                    borderRadius: '0.75rem',
-                    borderLeft: '4px solid #3b82f6',
-                    fontSize: '0.95rem',
-                    lineHeight: '1.6',
-                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
-                    transition: 'all 0.2s ease-in-out'
-                  }}
-                  onMouseOver={(e) => {
-                    const div = e.target as HTMLDivElement;
-                    div.style.boxShadow = '0 4px 8px rgba(59, 130, 246, 0.15)';
-                    div.style.transform = 'translateY(-2px)';
-                  }}
-                  onMouseOut={(e) => {
-                    const div = e.target as HTMLDivElement;
-                    div.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.05)';
-                    div.style.transform = 'translateY(0)';
-                  }}
-                >
-                  {insight}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Charts Grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
           {/* Bar Chart */}
@@ -435,6 +389,52 @@ const CarAnalyticsDashboard: React.FC = () => {
             </ResponsiveContainer>
           </div>
         </div>
+
+        {/* Overall Insights */}
+        {overallInsights.length > 0 && (
+          <div style={cardStyle}>
+            <h3 style={{ margin: '0 0 1.5rem', color: '#111827', fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              🤖 AI-Powered Overall Insights
+              <span style={{ 
+                fontSize: '0.75rem', 
+                backgroundColor: '#3b82f6', 
+                color: 'white', 
+                padding: '0.25rem 0.5rem', 
+                borderRadius: '0.25rem',
+                fontWeight: '600'
+              }}>LIVE</span>
+            </h3>
+            <div style={{ display: 'grid', gap: '1rem' }}>
+              {overallInsights.map((insight, index) => (
+                <div 
+                  key={index} 
+                  style={{
+                    padding: '1rem 1.25rem',
+                    background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+                    borderRadius: '0.75rem',
+                    borderLeft: '4px solid #3b82f6',
+                    fontSize: '0.95rem',
+                    lineHeight: '1.6',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.05)',
+                    transition: 'all 0.2s ease-in-out'
+                  }}
+                  onMouseOver={(e) => {
+                    const div = e.target as HTMLDivElement;
+                    div.style.boxShadow = '0 4px 8px rgba(59, 130, 246, 0.15)';
+                    div.style.transform = 'translateY(-2px)';
+                  }}
+                  onMouseOut={(e) => {
+                    const div = e.target as HTMLDivElement;
+                    div.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.05)';
+                    div.style.transform = 'translateY(0)';
+                  }}
+                >
+                  {insight}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* User Data Table */}
         <div style={cardStyle}>
@@ -528,38 +528,6 @@ const CarAnalyticsDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Footer Info */}
-        <div style={cardStyle}>
-          <h3 style={{ margin: '0 0 1rem', color: '#111827', fontSize: '1.125rem' }}>📋 Data Connection Info</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
-            <div>
-              <h4 style={{ margin: '0 0 0.5rem', color: '#374151', fontSize: '0.875rem', fontWeight: '600' }}>Your Google Sheets:</h4>
-              <p style={{ margin: '0', fontSize: '0.75rem', color: '#6b7280', wordBreak: 'break-all' }}>
-                https://docs.google.com/spreadsheets/d/{process.env.REACT_APP_GOOGLE_SHEETS_ID || 'YOUR_SHEET_ID'}
-              </p>
-            </div>
-            <div>
-              <h4 style={{ margin: '0 0 0.5rem', color: '#374151', fontSize: '0.875rem', fontWeight: '600' }}>Expected Columns:</h4>
-              <p style={{ margin: '0', fontSize: '0.75rem', color: '#6b7280' }}>
-                customerID, customerName, BackSeats, Steering, CarTyres, Door, Dashboard, FrontSeat, TotalTime
-              </p>
-            </div>
-            <div>
-              <h4 style={{ margin: '0 0 0.5rem', color: '#374151', fontSize: '0.875rem', fontWeight: '600' }}>Status:</h4>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <div style={{
-                  width: '8px',
-                  height: '8px',
-                  borderRadius: '50%',
-                  backgroundColor: userData.length > 0 ? '#10b981' : '#ef4444'
-                }}></div>
-                <span style={{ fontSize: '0.75rem', color: '#6b7280' }}>
-                  {userData.length > 0 ? 'Connected to Google Sheets' : 'No data available'}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* User Analytics Modal */}
