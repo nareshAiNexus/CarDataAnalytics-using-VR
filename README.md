@@ -1,6 +1,31 @@
-# Getting Started with Create React App
+# 🚗 Car Analytics Dashboard
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A real-time dashboard for visualizing AR/VR car viewing analytics data from Google Sheets.
+
+## 🔒 Security Setup (IMPORTANT)
+
+1. **Copy environment file:**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Add your Google Sheets ID to `.env`:**
+   ```env
+   REACT_APP_GOOGLE_SHEETS_ID=your_actual_google_sheets_id_here
+   ```
+
+3. **Make sure your Google Sheet is publicly viewable:**
+   - Open your Google Sheet → Share → "Anyone with the link can view"
+
+## Data Format
+Your Google Sheets should have these columns:
+```
+customerID | customerName | BackSeats | Steering | CarTyres | Door | Dashboard | FrontSeat | TotalTime
+```
+
+---
+
+*This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).*
 
 ## Available Scripts
 
