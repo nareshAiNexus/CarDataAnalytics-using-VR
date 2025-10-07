@@ -9,7 +9,11 @@ export const mockUserData: UserAnalytics[] = [
       carTyres: 8.6,
       door: 7.2,
       dashboard: 10.1,
-      frontSeat: 11.93
+      frontSeat: 11.93,
+      dicky: 0,
+      carBackSide: 0,
+      chargingPort: 0,
+      frontLight: 0
     },
     totalTime: 44.13,
     sessionDate: "2024-01-15T10:30:00Z",
@@ -23,7 +27,11 @@ export const mockUserData: UserAnalytics[] = [
       carTyres: 70.2,
       door: 60,
       dashboard: 88.85,
-      frontSeat: 106.09
+      frontSeat: 106.09,
+      dicky: 0,
+      carBackSide: 0,
+      chargingPort: 0,
+      frontLight: 0
     },
     totalTime: 377.94,
     sessionDate: "2024-01-15T14:20:00Z",
@@ -37,7 +45,11 @@ export const mockUserData: UserAnalytics[] = [
       carTyres: 16,
       door: 18,
       dashboard: 20,
-      frontSeat: 21.95
+      frontSeat: 21.95,
+      dicky: 0,
+      carBackSide: 0,
+      chargingPort: 0,
+      frontLight: 0
     },
     totalTime: 102.45,
     sessionDate: "2024-01-16T09:15:00Z",
@@ -56,7 +68,11 @@ export const mockTimeSeriesData: TimeSeriesData[] = [
       carTyres: 39.4,
       door: 33.6,
       dashboard: 49.48,
-      frontSeat: 59.01
+      frontSeat: 59.01,
+      dicky: 0,
+      carBackSide: 0,
+      chargingPort: 0,
+      frontLight: 0
     }
   },
   {
@@ -69,7 +85,11 @@ export const mockTimeSeriesData: TimeSeriesData[] = [
       carTyres: 16,
       door: 18,
       dashboard: 20,
-      frontSeat: 21.95
+      frontSeat: 21.95,
+      dicky: 0,
+      carBackSide: 0,
+      chargingPort: 0,
+      frontLight: 0
     }
   }
 ];
@@ -96,7 +116,11 @@ export const generateMockData = (count: number): UserAnalytics[] => {
         carTyres: Math.round((Math.random() * 18 + 6) * 10) / 10,
         door: Math.round((Math.random() * 25 + 5) * 10) / 10,
         dashboard: Math.round((Math.random() * 15 + 5) * 10) / 10,
-        frontSeat: Math.round((Math.random() * 20 + 5) * 10) / 10
+        frontSeat: Math.round((Math.random() * 20 + 5) * 10) / 10,
+        dicky: Math.round((Math.random() * 10 + 2) * 10) / 10,
+        carBackSide: Math.round((Math.random() * 10 + 2) * 10) / 10,
+        chargingPort: Math.round((Math.random() * 5 + 1) * 10) / 10,
+        frontLight: Math.round((Math.random() * 8 + 2) * 10) / 10
       },
       totalTime: 0, // Will be calculated
       sessionDate: date.toISOString(),

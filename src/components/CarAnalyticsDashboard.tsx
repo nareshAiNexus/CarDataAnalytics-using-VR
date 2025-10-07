@@ -57,12 +57,16 @@ const CarAnalyticsDashboard: React.FC = () => {
   
   // Calculate section averages
   const sectionAverages = {
-    backSeats: totalUsers > 0 ? userData.reduce((sum, user) => sum + user.sections.backSeats, 0) / totalUsers : 0,
-    steering: totalUsers > 0 ? userData.reduce((sum, user) => sum + user.sections.steering, 0) / totalUsers : 0,
-    carTyres: totalUsers > 0 ? userData.reduce((sum, user) => sum + user.sections.carTyres, 0) / totalUsers : 0,
-    door: totalUsers > 0 ? userData.reduce((sum, user) => sum + user.sections.door, 0) / totalUsers : 0,
     dashboard: totalUsers > 0 ? userData.reduce((sum, user) => sum + user.sections.dashboard, 0) / totalUsers : 0,
+    steering: totalUsers > 0 ? userData.reduce((sum, user) => sum + user.sections.steering, 0) / totalUsers : 0,
+    door: totalUsers > 0 ? userData.reduce((sum, user) => sum + user.sections.door, 0) / totalUsers : 0,
+    dicky: totalUsers > 0 ? userData.reduce((sum, user) => sum + user.sections.dicky, 0) / totalUsers : 0,
     frontSeat: totalUsers > 0 ? userData.reduce((sum, user) => sum + user.sections.frontSeat, 0) / totalUsers : 0,
+    backSeats: totalUsers > 0 ? userData.reduce((sum, user) => sum + user.sections.backSeats, 0) / totalUsers : 0,
+    carTyres: totalUsers > 0 ? userData.reduce((sum, user) => sum + user.sections.carTyres, 0) / totalUsers : 0,
+    carBackSide: totalUsers > 0 ? userData.reduce((sum, user) => sum + user.sections.carBackSide, 0) / totalUsers : 0,
+    chargingPort: totalUsers > 0 ? userData.reduce((sum, user) => sum + user.sections.chargingPort, 0) / totalUsers : 0,
+    frontLight: totalUsers > 0 ? userData.reduce((sum, user) => sum + user.sections.frontLight, 0) / totalUsers : 0,
   };
 
   const mostViewedSection = Object.entries(sectionAverages).reduce((max, [key, value]) => 
@@ -102,12 +106,16 @@ const CarAnalyticsDashboard: React.FC = () => {
     
     // Section popularity analysis
     const sectionTotals = {
-      steering: allUsers.reduce((sum, user) => sum + user.sections.steering, 0),
       dashboard: allUsers.reduce((sum, user) => sum + user.sections.dashboard, 0),
+      steering: allUsers.reduce((sum, user) => sum + user.sections.steering, 0),
+      door: allUsers.reduce((sum, user) => sum + user.sections.door, 0),
+      dicky: allUsers.reduce((sum, user) => sum + user.sections.dicky, 0),
       frontSeat: allUsers.reduce((sum, user) => sum + user.sections.frontSeat, 0),
       backSeats: allUsers.reduce((sum, user) => sum + user.sections.backSeats, 0),
-      door: allUsers.reduce((sum, user) => sum + user.sections.door, 0),
-      carTyres: allUsers.reduce((sum, user) => sum + user.sections.carTyres, 0)
+      carTyres: allUsers.reduce((sum, user) => sum + user.sections.carTyres, 0),
+      carBackSide: allUsers.reduce((sum, user) => sum + user.sections.carBackSide, 0),
+      chargingPort: allUsers.reduce((sum, user) => sum + user.sections.chargingPort, 0),
+      frontLight: allUsers.reduce((sum, user) => sum + user.sections.frontLight, 0)
     };
     
     const mostPopular = Object.entries(sectionTotals).reduce((max, [key, value]) => 
@@ -146,8 +154,10 @@ const CarAnalyticsDashboard: React.FC = () => {
     }
     
     // Interior vs Exterior preference
-    const totalInterior = allUsers.reduce((sum, user) => sum + user.sections.steering + user.sections.dashboard + user.sections.frontSeat + user.sections.backSeats, 0);
-    const totalExterior = allUsers.reduce((sum, user) => sum + user.sections.door + user.sections.carTyres, 0);
+    const totalInterior = allUsers.reduce((sum, user) => 
+      sum + user.sections.steering + user.sections.dashboard + user.sections.frontSeat + user.sections.backSeats + user.sections.chargingPort, 0);
+    const totalExterior = allUsers.reduce((sum, user) => 
+      sum + user.sections.door + user.sections.carTyres + user.sections.carBackSide + user.sections.dicky + user.sections.frontLight, 0);
     
     if (totalInterior > totalExterior * 1.5) {
       insights.push(`🚗 Users show strong preference for interior features, spending ${((totalInterior / (totalInterior + totalExterior)) * 100).toFixed(0)}% of time on interior elements.`);
@@ -164,24 +174,32 @@ const CarAnalyticsDashboard: React.FC = () => {
 
   function getDisplayName(sectionName: string): string {
     const displayNames = {
-      backSeats: 'Back Seats',
-      steering: 'Steering',
-      carTyres: 'Car Tyres',
-      door: 'Door',
       dashboard: 'Dashboard',
-      frontSeat: 'Front Seat'
+      steering: 'Steering',
+      door: 'Door',
+      dicky: 'Dicky',
+      frontSeat: 'Front Seat',
+      backSeats: 'Back Seats',
+      carTyres: 'Car Tyres',
+      carBackSide: 'Car BackSide',
+      chargingPort: 'Charging Port',
+      frontLight: 'Front & Light'
     };
     return displayNames[sectionName as keyof typeof displayNames] || sectionName;
   }
 
   function getColor(sectionName: string): string {
     const colors = {
-      backSeats: '#3b82f6',   // Blue
-      steering: '#ef4444',    // Red  
-      carTyres: '#10b981',    // Green
-      door: '#8b5cf6',        // Purple
-      dashboard: '#f59e0b',   // Orange
-      frontSeat: '#06b6d4'    // Cyan
+      dashboard: '#f59e0b',     // Orange
+      steering: '#ef4444',      // Red
+      door: '#8b5cf6',          // Purple
+      dicky: '#ec4899',         // Pink
+      frontSeat: '#06b6d4',     // Cyan
+      backSeats: '#3b82f6',     // Blue
+      carTyres: '#10b981',      // Green
+      carBackSide: '#f97316',   // Orange-red
+      chargingPort: '#84cc16',  // Lime
+      frontLight: '#eab308'     // Yellow
     };
     return colors[sectionName as keyof typeof colors] || '#8884d8';
   }
@@ -406,12 +424,16 @@ const CarAnalyticsDashboard: React.FC = () => {
                 <tr style={{ backgroundColor: '#f8fafc' }}>
                   <th style={{ padding: '1rem 0.75rem', textAlign: 'left', borderBottom: '2px solid #e5e7eb', fontWeight: '600', color: '#374151' }}>Customer</th>
                   <th style={{ padding: '1rem 0.75rem', textAlign: 'right', borderBottom: '2px solid #e5e7eb', fontWeight: '600', color: '#374151' }}>Total Time</th>
-                  <th style={{ padding: '1rem 0.75rem', textAlign: 'right', borderBottom: '2px solid #e5e7eb', fontWeight: '600', color: '#374151' }}>Back Seats</th>
-                  <th style={{ padding: '1rem 0.75rem', textAlign: 'right', borderBottom: '2px solid #e5e7eb', fontWeight: '600', color: '#374151' }}>Steering</th>
-                  <th style={{ padding: '1rem 0.75rem', textAlign: 'right', borderBottom: '2px solid #e5e7eb', fontWeight: '600', color: '#374151' }}>Car Tyres</th>
-                  <th style={{ padding: '1rem 0.75rem', textAlign: 'right', borderBottom: '2px solid #e5e7eb', fontWeight: '600', color: '#374151' }}>Door</th>
                   <th style={{ padding: '1rem 0.75rem', textAlign: 'right', borderBottom: '2px solid #e5e7eb', fontWeight: '600', color: '#374151' }}>Dashboard</th>
+                  <th style={{ padding: '1rem 0.75rem', textAlign: 'right', borderBottom: '2px solid #e5e7eb', fontWeight: '600', color: '#374151' }}>Steering</th>
+                  <th style={{ padding: '1rem 0.75rem', textAlign: 'right', borderBottom: '2px solid #e5e7eb', fontWeight: '600', color: '#374151' }}>Door</th>
+                  <th style={{ padding: '1rem 0.75rem', textAlign: 'right', borderBottom: '2px solid #e5e7eb', fontWeight: '600', color: '#374151' }}>Dicky</th>
                   <th style={{ padding: '1rem 0.75rem', textAlign: 'right', borderBottom: '2px solid #e5e7eb', fontWeight: '600', color: '#374151' }}>Front Seat</th>
+                  <th style={{ padding: '1rem 0.75rem', textAlign: 'right', borderBottom: '2px solid #e5e7eb', fontWeight: '600', color: '#374151' }}>Back Seats</th>
+                  <th style={{ padding: '1rem 0.75rem', textAlign: 'right', borderBottom: '2px solid #e5e7eb', fontWeight: '600', color: '#374151' }}>Car Tyres</th>
+                  <th style={{ padding: '1rem 0.75rem', textAlign: 'right', borderBottom: '2px solid #e5e7eb', fontWeight: '600', color: '#374151' }}>Car BackSide</th>
+                  <th style={{ padding: '1rem 0.75rem', textAlign: 'right', borderBottom: '2px solid #e5e7eb', fontWeight: '600', color: '#374151' }}>Charging Port</th>
+                  <th style={{ padding: '1rem 0.75rem', textAlign: 'right', borderBottom: '2px solid #e5e7eb', fontWeight: '600', color: '#374151' }}>Front & Light</th>
                 </tr>
               </thead>
               <tbody>
@@ -458,22 +480,34 @@ const CarAnalyticsDashboard: React.FC = () => {
                       {user.totalTime.toFixed(1)}s
                     </td>
                     <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #e5e7eb' }}>
-                      {user.sections.backSeats.toFixed(1)}s
+                      {user.sections.dashboard.toFixed(1)}s
                     </td>
                     <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #e5e7eb' }}>
                       {user.sections.steering.toFixed(1)}s
                     </td>
                     <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #e5e7eb' }}>
-                      {user.sections.carTyres.toFixed(1)}s
-                    </td>
-                    <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #e5e7eb' }}>
                       {user.sections.door.toFixed(1)}s
                     </td>
                     <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #e5e7eb' }}>
-                      {user.sections.dashboard.toFixed(1)}s
+                      {user.sections.dicky.toFixed(1)}s
                     </td>
                     <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #e5e7eb' }}>
                       {user.sections.frontSeat.toFixed(1)}s
+                    </td>
+                    <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #e5e7eb' }}>
+                      {user.sections.backSeats.toFixed(1)}s
+                    </td>
+                    <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #e5e7eb' }}>
+                      {user.sections.carTyres.toFixed(1)}s
+                    </td>
+                    <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #e5e7eb' }}>
+                      {user.sections.carBackSide.toFixed(1)}s
+                    </td>
+                    <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #e5e7eb' }}>
+                      {user.sections.chargingPort.toFixed(1)}s
+                    </td>
+                    <td style={{ padding: '0.75rem', textAlign: 'right', borderBottom: '1px solid #e5e7eb' }}>
+                      {user.sections.frontLight.toFixed(1)}s
                     </td>
                   </tr>
                 ))}

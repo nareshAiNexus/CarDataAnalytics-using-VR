@@ -1,8 +1,9 @@
 import { UserAnalytics } from '../types/analytics';
 
 // Extract sheet ID from environment variables
-const SHEET_ID = process.env.REACT_APP_GOOGLE_SHEETS_ID || '11W6vDoREHNMCNhaPNh50VBQ69iprItV9Ei2vsDh-JTE';
-const SHEET_NAME = process.env.REACT_APP_GOOGLE_SHEETS_NAME || 'car-data-analytics';
+const SHEET_ID = process.env.REACT_APP_GOOGLE_SHEETS_ID || '1lf-VvqwQOrkA6NCEQkwWSkK9mfruEAbL66tvT6QUxWk';
+const SHEET_GID = process.env.REACT_APP_GOOGLE_SHEETS_GID || '1318682208';
+const SHEET_NAME = process.env.REACT_APP_GOOGLE_SHEETS_NAME || 'GazeData';
 
 if (!process.env.REACT_APP_GOOGLE_SHEETS_ID) {
   console.warn('⚠️  REACT_APP_GOOGLE_SHEETS_ID not found in environment variables. Using fallback ID.');
@@ -24,17 +25,27 @@ export class GoogleSheetsService {
   public async fetchData(): Promise<UserAnalytics[]> {
     try {
       // Use the CSV export URL which doesn't require API key
-      const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
+      const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${SHEET_GID}`;
+      
+      console.log('Fetching from URL:', csvUrl);
       
       const response = await fetch(csvUrl);
+      console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+      
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
       }
       
       const csvText = await response.text();
+      console.log('Raw CSV data (first 500 chars):', csvText.substring(0, 500));
+      console.log('CSV length:', csvText.length);
+      
       return this.parseCSVData(csvText);
     } catch (error) {
       console.error('Error fetching Google Sheets data:', error);
+      console.error('Sheet ID:', SHEET_ID);
+      console.error('Sheet GID:', SHEET_GID);
       // Return empty array on error - the dashboard will fall back to demo data
       return [];
     }
@@ -44,32 +55,38 @@ export class GoogleSheetsService {
     const lines = csvText.split('\n');
     if (lines.length < 2) return [];
 
-    // Parse header row
-    const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, '').toLowerCase());
+    // Parse header row - keep exact case and spaces
+    const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
     const data: UserAnalytics[] = [];
 
-    // Find column indices based on your exact headers
-    const customerIdIndex = headers.findIndex(h => h.includes('customerid'));
-    const customerNameIndex = headers.findIndex(h => h.includes('customername'));
-    const backSeatsIndex = headers.findIndex(h => h.includes('backseats'));
-    const steeringIndex = headers.findIndex(h => h.includes('steering'));
-    const carTyresIndex = headers.findIndex(h => h.includes('cartyres'));
-    const doorIndex = headers.findIndex(h => h.includes('door'));
-    const dashboardIndex = headers.findIndex(h => h.includes('dashboard'));
-    const frontSeatIndex = headers.findIndex(h => h.includes('frontseat'));
-    const totalTimeIndex = headers.findIndex(h => h.includes('totaltime'));
+    // Find column indices based on your exact headers (case and space sensitive)
+    const timestampIndex = headers.findIndex(h => h === 'Timestamp');
+    const customerNameIndex = headers.findIndex(h => h === 'Customer Name');
+    const dashboardIndex = headers.findIndex(h => h === 'DashBoard');
+    const steeringIndex = headers.findIndex(h => h === 'Sterring');
+    const doorIndex = headers.findIndex(h => h === 'Door');
+    const dickyIndex = headers.findIndex(h => h === 'Dicky');
+    const frontSeatIndex = headers.findIndex(h => h === 'Front Seat');
+    const backSeatsIndex = headers.findIndex(h => h === 'Back Seats');
+    const carTyresIndex = headers.findIndex(h => h === 'Car Tyres');
+    const carBackSideIndex = headers.findIndex(h => h === 'Car BackSide');
+    const chargingPortIndex = headers.findIndex(h => h === 'Charging Port');
+    const frontLightIndex = headers.findIndex(h => h === 'Front & Light');
 
     console.log('Headers found:', headers);
     console.log('Column indices:', {
-      customerId: customerIdIndex,
+      timestamp: timestampIndex,
       customerName: customerNameIndex,
-      backSeats: backSeatsIndex,
-      steering: steeringIndex,
-      carTyres: carTyresIndex,
-      door: doorIndex,
       dashboard: dashboardIndex,
+      steering: steeringIndex,
+      door: doorIndex,
+      dicky: dickyIndex,
       frontSeat: frontSeatIndex,
-      totalTime: totalTimeIndex
+      backSeats: backSeatsIndex,
+      carTyres: carTyresIndex,
+      carBackSide: carBackSideIndex,
+      chargingPort: chargingPortIndex,
+      frontLight: frontLightIndex
     });
 
     // Parse data rows
@@ -78,37 +95,38 @@ export class GoogleSheetsService {
       if (!line) continue;
 
       const values = this.parseCSVLine(line);
-      if (values.length < 7) { // Minimum expected columns
+      if (values.length < 3) { // Minimum expected columns (at least customer name and some data)
         continue;
       }
 
-      const customerId = values[customerIdIndex] || i.toString();
-      const customerName = values[customerNameIndex] || `User ${customerId}`;
+      const customerName = values[customerNameIndex] || `User ${i}`;
+      const timestamp = values[timestampIndex] || new Date().toISOString();
       
-      // Map your actual data columns directly
+      // Map all sections with fallback to 0 if missing
       const sections = {
-        backSeats: this.parseNumericValue(values[backSeatsIndex]),
-        steering: this.parseNumericValue(values[steeringIndex]),
-        carTyres: this.parseNumericValue(values[carTyresIndex]),
-        door: this.parseNumericValue(values[doorIndex]),
         dashboard: this.parseNumericValue(values[dashboardIndex]),
-        frontSeat: this.parseNumericValue(values[frontSeatIndex])
+        steering: this.parseNumericValue(values[steeringIndex]),
+        door: this.parseNumericValue(values[doorIndex]),
+        dicky: this.parseNumericValue(values[dickyIndex]),
+        frontSeat: this.parseNumericValue(values[frontSeatIndex]),
+        backSeats: this.parseNumericValue(values[backSeatsIndex]),
+        carTyres: this.parseNumericValue(values[carTyresIndex]),
+        carBackSide: this.parseNumericValue(values[carBackSideIndex]),
+        chargingPort: this.parseNumericValue(values[chargingPortIndex]),
+        frontLight: this.parseNumericValue(values[frontLightIndex])
       };
 
-      // Use the TotalTime from your sheet if available, otherwise calculate
-      const totalTime = totalTimeIndex >= 0 
-        ? this.parseNumericValue(values[totalTimeIndex])
-        : Object.values(sections).reduce((sum, time) => sum + time, 0);
+      // Calculate total time from all sections
+      const totalTime = Object.values(sections).reduce((sum, time) => sum + time, 0);
 
-      if (totalTime > 0) { // Only include rows with actual data
-        data.push({
-          customerName: customerName.replace(/"/g, ''),
-          sections,
-          totalTime,
-          sessionDate: new Date().toISOString(),
-          sessionId: `sheets_${customerId}`
-        });
-      }
+      // Include all rows, even if totalTime is 0 (as requested)
+      data.push({
+        customerName: customerName.replace(/"/g, ''),
+        sections,
+        totalTime,
+        sessionDate: timestamp,
+        sessionId: `sheets_${customerName}_${i}`
+      });
     }
 
     console.log(`Parsed ${data.length} records from Google Sheets`);

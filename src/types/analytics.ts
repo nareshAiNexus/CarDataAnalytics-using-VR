@@ -1,10 +1,14 @@
 export interface CarSection {
-  backSeats: number;
-  steering: number;
-  carTyres: number;
-  door: number;
   dashboard: number;
+  steering: number;
+  door: number;
+  dicky: number;
   frontSeat: number;
+  backSeats: number;
+  carTyres: number;
+  carBackSide: number;
+  chargingPort: number;
+  frontLight: number;
 }
 
 export interface UserAnalytics {
@@ -38,19 +42,27 @@ export interface TimeSeriesData {
 }
 
 export const CAR_SECTIONS = [
-  'backSeats',
-  'steering',
-  'carTyres',
-  'door',
   'dashboard',
-  'frontSeat'
+  'steering',
+  'door',
+  'dicky',
+  'frontSeat',
+  'backSeats',
+  'carTyres',
+  'carBackSide',
+  'chargingPort',
+  'frontLight'
 ] as const;
 
 export const SECTION_COLORS = {
-  backSeats: '#3b82f6',
-  steering: '#ef4444',
-  carTyres: '#10b981',
-  door: '#8b5cf6',
   dashboard: '#f59e0b',
-  frontSeat: '#06b6d4'
+  steering: '#ef4444',
+  door: '#8b5cf6',
+  dicky: '#ec4899',
+  frontSeat: '#06b6d4',
+  backSeats: '#3b82f6',
+  carTyres: '#10b981',
+  carBackSide: '#f97316',
+  chargingPort: '#84cc16',
+  frontLight: '#eab308'
 } as const;

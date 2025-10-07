@@ -84,8 +84,8 @@ const UserAnalyticsModal: React.FC<UserAnalyticsModalProps> = ({
     }
 
     // Behavioral pattern insights
-    const exteriorTime = sections.carTyres + sections.door;
-    const interiorTime = sections.backSeats + sections.frontSeat + sections.dashboard + sections.steering;
+    const exteriorTime = sections.carTyres + sections.door + sections.carBackSide + sections.dicky + sections.frontLight;
+    const interiorTime = sections.backSeats + sections.frontSeat + sections.dashboard + sections.steering + sections.chargingPort;
     
     if (exteriorTime > interiorTime) {
       insights.push("🚗 Exterior-focused viewer: Spent more time examining the car's external features than interior components.");
@@ -116,12 +116,16 @@ const UserAnalyticsModal: React.FC<UserAnalyticsModalProps> = ({
 
   const getDisplayName = (sectionName: string): string => {
     const displayNames: { [key: string]: string } = {
-      backSeats: 'Back Seats',
-      steering: 'Steering',
-      carTyres: 'Car Tyres',
-      door: 'Door',
       dashboard: 'Dashboard',
-      frontSeat: 'Front Seat'
+      steering: 'Steering',
+      door: 'Door',
+      dicky: 'Dicky',
+      frontSeat: 'Front Seat',
+      backSeats: 'Back Seats',
+      carTyres: 'Car Tyres',
+      carBackSide: 'Car BackSide',
+      chargingPort: 'Charging Port',
+      frontLight: 'Front & Light'
     };
     return displayNames[sectionName] || sectionName;
   };
@@ -145,12 +149,16 @@ const UserAnalyticsModal: React.FC<UserAnalyticsModalProps> = ({
   const averageUser = {
     totalTime: allUsersData.reduce((sum, u) => sum + u.totalTime, 0) / allUsersData.length,
     sections: {
-      backSeats: allUsersData.reduce((sum, u) => sum + u.sections.backSeats, 0) / allUsersData.length,
-      steering: allUsersData.reduce((sum, u) => sum + u.sections.steering, 0) / allUsersData.length,
-      carTyres: allUsersData.reduce((sum, u) => sum + u.sections.carTyres, 0) / allUsersData.length,
-      door: allUsersData.reduce((sum, u) => sum + u.sections.door, 0) / allUsersData.length,
       dashboard: allUsersData.reduce((sum, u) => sum + u.sections.dashboard, 0) / allUsersData.length,
+      steering: allUsersData.reduce((sum, u) => sum + u.sections.steering, 0) / allUsersData.length,
+      door: allUsersData.reduce((sum, u) => sum + u.sections.door, 0) / allUsersData.length,
+      dicky: allUsersData.reduce((sum, u) => sum + u.sections.dicky, 0) / allUsersData.length,
       frontSeat: allUsersData.reduce((sum, u) => sum + u.sections.frontSeat, 0) / allUsersData.length,
+      backSeats: allUsersData.reduce((sum, u) => sum + u.sections.backSeats, 0) / allUsersData.length,
+      carTyres: allUsersData.reduce((sum, u) => sum + u.sections.carTyres, 0) / allUsersData.length,
+      carBackSide: allUsersData.reduce((sum, u) => sum + u.sections.carBackSide, 0) / allUsersData.length,
+      chargingPort: allUsersData.reduce((sum, u) => sum + u.sections.chargingPort, 0) / allUsersData.length,
+      frontLight: allUsersData.reduce((sum, u) => sum + u.sections.frontLight, 0) / allUsersData.length,
     }
   };
 
